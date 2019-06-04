@@ -13,6 +13,10 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import androidx.annotation.Nullable;
+import androidx.core.view.GestureDetectorCompat;
+import androidx.core.view.ViewCompat;
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.StaticLayout;
@@ -1353,7 +1357,7 @@ public class WeekView extends View {
      */
     protected void computePositionOfEvents(List<EventRect> eventRects) {
         // Make "collision groups" for all events that collide with others.
-        List<List<EventRect>> collisionGroups = new ArrayList<List<EventRect>>();
+        List<List<EventRect>> collisionGroups = new ArrayList<>();
         for (EventRect eventRect : eventRects) {
             boolean isPlaced = false;
 
@@ -1369,7 +1373,7 @@ public class WeekView extends View {
             }
 
             if (!isPlaced) {
-                List<EventRect> newGroup = new ArrayList<EventRect>();
+                List<EventRect> newGroup = new ArrayList<>();
                 newGroup.add(eventRect);
                 collisionGroups.add(newGroup);
             }
@@ -1388,12 +1392,12 @@ public class WeekView extends View {
      */
     protected void expandEventsToMaxWidth(List<EventRect> collisionGroup) {
         // Expand the events to maximum possible width.
-        List<List<EventRect>> columns = new ArrayList<List<EventRect>>();
+        List<List<EventRect>> columns = new ArrayList<>();
         columns.add(new ArrayList<EventRect>());
         for (EventRect eventRect : collisionGroup) {
             boolean isPlaced = false;
             for (List<EventRect> column : columns) {
-                if (column.size() == 0) {
+                if (column.isEmpty()) {
                     column.add(eventRect);
                     isPlaced = true;
                 } else if (!isEventsCollide(eventRect.event, column.get(column.size() - 1).event)) {
@@ -1403,7 +1407,7 @@ public class WeekView extends View {
                 }
             }
             if (!isPlaced) {
-                List<EventRect> newColumn = new ArrayList<EventRect>();
+                List<EventRect> newColumn = new ArrayList<>();
                 newColumn.add(eventRect);
                 columns.add(newColumn);
             }
@@ -2610,10 +2614,7 @@ public class WeekView extends View {
         if (mMinDate != null && day.before(mMinDate)) {
             return false;
         }
-        if (mMaxDate != null && day.after(mMaxDate)) {
-            return false;
-        }
-        return true;
+        return mMaxDate == null || !day.after(mMaxDate);
     }
 
     /////////////////////////////////////////////////////////////////

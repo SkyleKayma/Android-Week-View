@@ -186,7 +186,7 @@ public class WeekViewAdvanced extends WeekView {
             if ((mEmptyViewClickListener != null || mAddEventClickListener != null) && e.getX() > mHeaderColumnWidth && e.getY() > (mHeaderHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom)) {
                 Calendar selectedTime = getTimeFromPoint(e.getX(), e.getY());
                 List<EventRect> tempEventRects = new ArrayList<>(mEventRects);
-                mEventRects = new ArrayList<EventRect>();
+                mEventRects = new ArrayList<>();
                 if (selectedTime != null) {
                     if (mNewEventRect != null) {
                         tempEventRects.remove(mNewEventRect);
@@ -222,7 +222,7 @@ public class WeekViewAdvanced extends WeekView {
                                 top < getHeight() &&
                                 right > mHeaderColumnWidth &&
                                 bottom > 0
-                                ) {
+                        ) {
                             RectF dayRectF = new RectF(left, top, right, bottom);
                             newEvent.setColor(mNewEventColor);
                             mNewEventRect = new EventRect(newEvent, newEvent, dayRectF);
